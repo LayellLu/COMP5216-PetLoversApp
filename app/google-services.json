@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "930393408530",
+    "project_id": "comp5216-groupproject",
+    "storage_bucket": "comp5216-groupproject.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:930393408530:android:7aaaa0f57f8292a743c4cb",
+        "android_client_info": {
+          "package_name": "com.example.comp5216_petloversapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "930393408530-acnuhcjqak3g75kfp247okm5v8ufod45.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFoOmMq_JE92u5HSj9keT3ruXjp90bv_Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "930393408530-acnuhcjqak3g75kfp247okm5v8ufod45.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
