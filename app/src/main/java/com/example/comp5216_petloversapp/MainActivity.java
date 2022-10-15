@@ -8,6 +8,8 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import android.os.Bundle;
 
 import com.example.comp5216_petloversapp.databinding.ActivityMainBinding;
+//import com.google.firebase.database.*;
+import org.jetbrains.annotations.NotNull;
 
 public class MainActivity extends AppCompatActivity {
     private OhFragment fragment1;
@@ -35,5 +37,25 @@ public class MainActivity extends AppCompatActivity {
                 return 1;
             }
         });
+
+//        // Write a message to the database
+//        DatabaseReference database = FirebaseDatabase.getInstance().getReferenceFromUrl("https://comp5216-group4-default-rtdb.firebaseio.com/group4");
+//        DatabaseReference myRef = database.getRef().child("group4");
+//        DatabaseReference childRef = myRef.child("banner1");
+//
+//        //setting value
+//        myRef.setValue("Hello, World!");
+//
+//        childRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+//
+//            }
+//        });
     }
 }
