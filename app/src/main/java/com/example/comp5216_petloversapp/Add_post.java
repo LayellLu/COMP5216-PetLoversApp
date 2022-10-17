@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -17,6 +18,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -29,6 +32,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -54,16 +58,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-public class Add_post extends AppCompatActivity {
+public class Add_post extends AppCompatActivity implements LocationListener {
     EditText title_blog, description_blog;
     Button upload;
     ImageView blog_image;
 
     Uri image_uri = null;
 
-    private static String city = "";
-    private static String state="";
-    private static String country="";
+    private static String city="11";
+    private static String state;
+    private static String country;
     private static final int GALLERY_IMAGE_CODE = 100;
     private static final int CAMERA_IMAGE_CODE = 200;
     private static final int REQUEST_CODE = 300;
@@ -71,7 +75,8 @@ public class Add_post extends AppCompatActivity {
     ProgressDialog pd;
     FirebaseAuth auth;
 
-    FusedLocationProviderClient fusedLocationProviderClient;
+    FusedLocationProviderClient fusedLocationClient;
+    LocationManager locationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +92,7 @@ public class Add_post extends AppCompatActivity {
         pd = new ProgressDialog(this);
         auth = FirebaseAuth.getInstance();
 
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
         blog_image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,9 +151,10 @@ public class Add_post extends AppCompatActivity {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINA);
         Date now = new Date();
         String timeStamp = formatter.format(now);
-        String filePathAndName = "Picture/" + "post"+ timeStamp;
+        String filePathAndName = "Picture/" + "post" + timeStamp;
 
         getLastLocation();
+
 
         if (blog_image.getDrawable() != null) {
             //upload image
@@ -167,18 +173,18 @@ public class Add_post extends AppCompatActivity {
                             Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
                             while (!uriTask.isSuccessful()) ;
                             String downloadUri = uriTask.getResult().toString();
-                            getLastLocation();
-                            if(uriTask.isSuccessful()){
+
+                            if (uriTask.isSuccessful()) {
                                 FirebaseAuth user = FirebaseAuth.getInstance();
                                 HashMap<String, Object> hashMap = new HashMap<>();
                                 hashMap.put("UserEmail", user.getCurrentUser().getEmail());
-                                hashMap.put("BlogId", user.getCurrentUser().getEmail()+'_' + timeStamp);
+                                hashMap.put("BlogId", user.getCurrentUser().getEmail() + '_' + timeStamp);
                                 hashMap.put("BlogTitle", title);
-                                hashMap.put("Image" , downloadUri);
+                                hashMap.put("Image", downloadUri);
                                 hashMap.put("Blog", description);
                                 hashMap.put("Time", timeStamp);
-                                hashMap.put("Location", country+"_ "+state+"_ "+city);
-                                System.out.println("pLocation: "+country+"_ "+state+"_ "+city);
+                                hashMap.put("Location", country + "_ " + state + "_ " + city);
+                                System.out.println("pLocation: " + country + "_ " + state + "_ " + city);
                                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Blogs");
 
                                 ref.child(timeStamp).setValue(hashMap)
@@ -218,44 +224,44 @@ public class Add_post extends AppCompatActivity {
 
     }
 
-    private void getLastLocation() {
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    REQUEST_CODE);
-            System.out.println("FFailed");
-        }else {
-            fusedLocationProviderClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
-                @SuppressLint("SetTextI18n")
-                @Override
-                public void onSuccess(Location location) {
-                    if(location != null){
-                        Geocoder geocoder = new Geocoder(Add_post.this, Locale.getDefault());
-                        List<Address> addresses = null;
-                        try {
-                            addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                            city = addresses.get(0).getLocality();
-                            state = addresses.get(0).getAdminArea();
-                            country = addresses.get(0).getCountryName();
-                            System.out.println("city: "+city);
-                            System.out.println("state: "+state);
-                            System.out.println("country: "+country);
-
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-
-                    }else {
-                        askPermission();
-                    }
-                }
-
-            });
-
-        }
-
-    }
+//    private void getLastLocation() {
+//
+//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+//                != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+//                    REQUEST_CODE);
+//            System.out.println("FFailed");
+//        }else {
+//            fusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+//                @SuppressLint("SetTextI18n")
+//                @Override
+//                public void onSuccess(Location location) {
+//                    if(location != null){
+//                        Geocoder geocoder = new Geocoder(Add_post.this, Locale.getDefault());
+//                        List<Address> addresses = null;
+//                        try {
+//                            addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+//                            city = addresses.get(0).getLocality();
+//                            state = addresses.get(0).getAdminArea();
+//                            country = addresses.get(0).getCountryName();
+//                            System.out.println("city: "+city);
+//                            System.out.println("state: "+state);
+//                            System.out.println("country: "+country);
+//
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//
+//                    }else {
+//                        askPermission();
+//                    }
+//                }
+//
+//            });
+//
+//        }
+//
+//    }
 
     private void askPermission() {
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
@@ -297,6 +303,7 @@ public class Add_post extends AppCompatActivity {
 
                 }).check();
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
@@ -312,11 +319,10 @@ public class Add_post extends AppCompatActivity {
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_add_post,menu);
+        getMenuInflater().inflate(R.menu.menu_add_post, menu);
         return true;
     }
 
-    //点击事件，调用uploadData()方法
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         String title = title_blog.getText().toString().trim();
@@ -339,4 +345,62 @@ public class Add_post extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void getLastLocation() {
+        try {
+            locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, Add_post.this);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+        //Toast.makeText(this, ""+location.getLatitude()+","+location.getLongitude(), Toast.LENGTH_SHORT).show();
+        try {
+            Geocoder geocoder = new Geocoder(Add_post.this, Locale.getDefault());
+            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
+
+            city = addresses.get(0).getLocality();
+            country = addresses.get(0).getCountryName();
+            state = addresses.get(0).getAdminArea();
+
+            System.out.println("city: "+city);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public void onLocationChanged(@NonNull List<Location> locations) {
+        LocationListener.super.onLocationChanged(locations);
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+        LocationListener.super.onStatusChanged(provider, status, extras);
+    }
+
+    @Override
+    public void onProviderEnabled(@NonNull String provider) {
+        LocationListener.super.onProviderEnabled(provider);
+    }
+
+    @Override
+    public void onProviderDisabled(@NonNull String provider) {
+        LocationListener.super.onProviderDisabled(provider);
+    }
 }
