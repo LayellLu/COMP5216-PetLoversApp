@@ -7,6 +7,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
+import android.text.TextUtils;
+import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -45,27 +47,35 @@ public class ResetPasswordActivity extends AppCompatActivity {
         });
 
         btn_reset.setOnClickListener(view -> {
-            progressDialog.setMessage("Please wait while sending email...");
-            progressDialog.setTitle("Reset Password");
-            progressDialog.setCanceledOnTouchOutside(false);
-            progressDialog.show();
+            String email = et_email.getText().toString();
+            if (TextUtils.isEmpty(email) &&
+                    !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                et_email.setError("Please enter correct email");
+                Toast.makeText(ResetPasswordActivity.this,
+                        "Please enter correct the email",
+                        Toast.LENGTH_LONG).show();
+            } else {
+                progressDialog.setMessage("Please wait while sending email...");
+                progressDialog.setTitle("Reset Password");
+                progressDialog.setCanceledOnTouchOutside(false);
+                progressDialog.show();
+                mAuth.sendPasswordResetEmail(et_email.getText().toString())
+                        .addOnCompleteListener(task -> {
+                            progressDialog.dismiss();
 
-            mAuth.sendPasswordResetEmail(et_email.getText().toString())
-                    .addOnCompleteListener(task -> {
-                        progressDialog.dismiss();
-
-                        if (task.isSuccessful()) {
-                            Toast.makeText(ResetPasswordActivity.this,
-                                    "Mail has been sent, please check your inbox!",
-                                    Toast.LENGTH_LONG).show();
-                            startActivity(new Intent(ResetPasswordActivity.this,
-                                    LoginActivity.class));
-                            finish();
-                        } else {
-                            Toast.makeText(ResetPasswordActivity.this,
-                                    task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                            if (task.isSuccessful()) {
+                                Toast.makeText(ResetPasswordActivity.this,
+                                        "Mail has been sent, please check your inbox!",
+                                        Toast.LENGTH_LONG).show();
+                                startActivity(new Intent(ResetPasswordActivity.this,
+                                        LoginActivity.class));
+                                finish();
+                            } else {
+                                Toast.makeText(ResetPasswordActivity.this,
+                                        task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
         });
 
     }
