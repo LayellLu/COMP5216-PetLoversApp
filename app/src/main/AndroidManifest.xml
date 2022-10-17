@@ -24,7 +24,9 @@
         android:theme="@style/Theme.COMP5216PetLoversApp">
         <activity
             android:name=".Add_post"
-            android:exported="false">
+            android:exported="false"
+            android:label="Add Post">
+
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
