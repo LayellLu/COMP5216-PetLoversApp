@@ -79,6 +79,9 @@ public class LoginActivity extends AppCompatActivity {
 
             if (!task.isSuccessful()) {
                 Log.w("TAG", "signInWithEmail:failed", task.getException());
+                Toast.makeText(LoginActivity.this,
+                        "Failed to login, please input your credentials correctly",
+                        Toast.LENGTH_LONG).show();
             } else {
                 checkIfEmailVerified();
             }
