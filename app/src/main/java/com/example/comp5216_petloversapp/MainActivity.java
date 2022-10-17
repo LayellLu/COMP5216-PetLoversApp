@@ -35,5 +35,10 @@ public class MainActivity extends AppCompatActivity {
                 return 1;
             }
         });
+        
+        addPost = findViewById(R.id.add_post);
+        addPost.setOnClickListener(v -> {
+            startActivity(new Intent(this, Add_post.class));
+        });
     }
 }
