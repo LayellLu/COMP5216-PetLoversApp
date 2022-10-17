@@ -5,64 +5,78 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/purple_200"
+    android:background="@color/white"
     tools:context=".LoginActivity">
 
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:background="@drawable/ic_launcher_foreground"
-        android:layout_marginTop="200dp"
+        android:layout_width="290dp"
+        android:layout_height="190dp"
+        android:background="@drawable/login"
+        android:layout_marginTop="38dp"
         android:layout_gravity="center"/>
     <EditText
         android:id="@+id/et_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Email"
+        android:hint="  Email"
         android:maxLines="1"
         android:inputType="textEmailAddress"
         android:layout_marginTop="30dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"/>
-    <EditText
-        android:id="@+id/et_password"
+
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Password"
-        android:maxLines="1"
-        android:inputType="textPassword"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"/>
+        android:layout_height="match_parent"
+        app:passwordToggleEnabled="true">
 
-    <Button
-        android:id="@+id/btn_forgot"
-        android:layout_width="190dp"
-        android:layout_height="wrap_content"
-        android:text="Forgot password"
-        android:layout_marginTop="5dp"
-        android:layout_gravity="right"
-        android:layout_marginRight="30dp"/>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp">
-
-        <Button
-            android:id="@+id/btn_login"
+        <EditText
+            android:id="@+id/et_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:backgroundTint="@color/white"
+            android:maxLines="1"
+            android:inputType="textPassword"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            app:passwordToggleEnabled="true"/>
+        <TextView
+            android:id="@+id/tv_forgot"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:text="Login"
-            android:layout_marginLeft="50dp"/>
-        <Button
-            android:id="@+id/btn_register"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:text="Sign up"
-            android:layout_marginLeft="5dp"/>
+            android:text="Forgot password?"
+            android:clickable="true"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginTop="5dp"
+            android:layout_gravity="right"
+            android:layout_marginRight="5dp"/>
 
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+
+            <Button
+                android:id="@+id/btn_login"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="Login"
+                android:layout_marginLeft="50dp"/>
+            <Button
+                android:id="@+id/btn_register"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="Sign up"
+                android:layout_marginLeft="5dp"/>
+
+        </LinearLayout>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
 
 </LinearLayout>

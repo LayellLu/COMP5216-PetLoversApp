@@ -10,6 +10,7 @@ import android.util.Log;
 import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,7 +22,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText et_password;
     private Button btn_login;
     private Button btn_register;
-    private Button btn_forgot;
+    private TextView tv_forgot;
 
     private ProgressDialog progressDialog;
 
@@ -36,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
         et_password = findViewById(R.id.et_password);
         btn_login = findViewById(R.id.btn_login);
         btn_register = findViewById(R.id.btn_register);
-        btn_forgot = findViewById(R.id.btn_forgot);
+        tv_forgot = findViewById(R.id.tv_forgot);
 
         progressDialog = new ProgressDialog(this);
 
@@ -66,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
             finish();
         });
 
-        btn_forgot.setOnClickListener(v -> {
+        tv_forgot.setOnClickListener(v -> {
             startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
             finish();
         });

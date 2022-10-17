@@ -17,7 +17,6 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class ResetPasswordActivity extends AppCompatActivity {
 
-    private Toolbar toolbar;
     private EditText et_email;
     private Button btn_reset;
     private Button btn_return;
@@ -31,15 +30,12 @@ public class ResetPasswordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset_password);
 
-        toolbar = findViewById(R.id.toolbar);
-
         et_email = findViewById(R.id.et_email);
         btn_reset = findViewById(R.id.btn_reset);
         btn_return = findViewById(R.id.btn_return);
 
         progressDialog = new ProgressDialog(this);
         mAuth = FirebaseAuth.getInstance();
-        toolbar.setTitle("Forgot password");
 
         btn_return.setOnClickListener(v -> {
             startActivity(new Intent(ResetPasswordActivity.this, LoginActivity.class));
