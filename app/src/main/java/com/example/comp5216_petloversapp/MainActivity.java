@@ -5,13 +5,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.TextView;
 
 import com.example.comp5216_petloversapp.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
     private OhFragment fragment1;
     private OhFragment fragment2;
+
+    private TextView addPost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
                 return 1;
             }
         });
-        
+
         addPost = findViewById(R.id.add_post);
         addPost.setOnClickListener(v -> {
             startActivity(new Intent(this, Add_post.class));
