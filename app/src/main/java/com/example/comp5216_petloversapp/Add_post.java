@@ -152,7 +152,6 @@ public class Add_post extends AppCompatActivity implements LocationListener {
         String timeStamp = formatter.format(now);
         String filePathAndName = "Picture/" + "post" + timeStamp;
         String email = auth.getCurrentUser().getEmail();
-        //将email以@为分隔符分开，取第一部分作为用户名
         String[] split = email.split("@");
         String username = split[0];
 
