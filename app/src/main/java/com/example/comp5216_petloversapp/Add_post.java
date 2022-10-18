@@ -179,13 +179,13 @@ public class Add_post extends AppCompatActivity implements LocationListener {
                             if (uriTask.isSuccessful()) {
                                 FirebaseAuth user = FirebaseAuth.getInstance();
                                 HashMap<String, Object> hashMap = new HashMap<>();
-                                hashMap.put("UserEmail", user.getCurrentUser().getEmail());
-                                hashMap.put("BlogId", user.getCurrentUser().getEmail() + '_' + timeStamp);
-                                hashMap.put("BlogTitle", title);
-                                hashMap.put("Image", downloadUri);
-                                hashMap.put("Blog", description);
-                                hashMap.put("Time", timeStamp);
-                                hashMap.put("Location", country + "_ " + state + "_ " + city);
+                                hashMap.put("userEmail", user.getCurrentUser().getEmail());
+                                hashMap.put("blogId", user.getCurrentUser().getEmail() + '_' + timeStamp);
+                                hashMap.put("blogTitle", title);
+                                hashMap.put("image", downloadUri);
+                                hashMap.put("blogDescription", description);
+                                hashMap.put("time", timeStamp);
+                                hashMap.put("location", country + "_ " + state + "_ " + city);
                                 System.out.println("pLocation: " + country + "_ " + state + "_ " + city);
                                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Blogs");
                                 ref.child(username + "_" + timeStamp).setValue(hashMap)
