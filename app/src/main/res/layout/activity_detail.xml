@@ -6,14 +6,7 @@
     android:layout_height="match_parent"
     tools:context="com.example.comp5216_petloversapp.DetailActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/purple_500"
-        app:layout_constraintTop_toTopOf="parent"
-        app:title="Page Title"
-        app:titleTextColor="@color/white" />
+
 
     <ImageView
         android:id="@+id/iv"
@@ -22,7 +15,7 @@
         android:scaleType="centerCrop"
         android:src="@drawable/image_2"
         app:layout_constraintDimensionRatio="W,2:3"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/ll_username"

@@ -14,7 +14,7 @@ public class DetailActivity extends AppCompatActivity {
         ActivityDetailBinding binding = ActivityDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        setSupportActionBar(binding.toolbar);
+        setTitle("Page Title");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
