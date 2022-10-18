@@ -151,6 +151,9 @@ public class Add_post extends AppCompatActivity implements LocationListener {
         Date now = new Date();
         String timeStamp = formatter.format(now);
         String filePathAndName = "Picture/" + "post" + timeStamp;
+        String email = auth.getCurrentUser().getEmail();
+        String[] split = email.split("@");
+        String username = split[0];
 
         getLastLocation();
 
@@ -185,8 +188,7 @@ public class Add_post extends AppCompatActivity implements LocationListener {
                                 hashMap.put("Location", country + "_ " + state + "_ " + city);
                                 System.out.println("pLocation: " + country + "_ " + state + "_ " + city);
                                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Blogs");
-
-                                ref.child(timeStamp).setValue(hashMap)
+                                ref.child(username + "_" + timeStamp).setValue(hashMap)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
 
                                             @Override
