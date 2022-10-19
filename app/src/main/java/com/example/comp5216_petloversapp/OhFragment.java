@@ -15,12 +15,20 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.comp5216_petloversapp.databinding.FragmentOhBinding;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class OhFragment extends Fragment {
     private FragmentOhBinding binding;
     private ImagePageAdapter imageAdapter = new ImagePageAdapter();
-    private HomeAdapter homeAdapter = new HomeAdapter();
-
+    private HomeAdapter homeAdapter ;
+    List<Blog> blogs = new ArrayList<>();
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -30,7 +38,36 @@ public class OhFragment extends Fragment {
         return binding.getRoot();
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initData();
+    }
+
+    private void initData() {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Blogs");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                blogs.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    Blog blog = snapshot.getValue(Blog.class);
+                    blogs.add(blog);
+
+                }
+                homeAdapter.notifyDataSetChanged();
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
+
     private void initTab() {
+        homeAdapter = new HomeAdapter(blogs);
         binding.rvData.setAdapter(homeAdapter);
         binding.tl.addTab(binding.tl.newTab().setText("Tab1"));
         binding.tl.addTab(binding.tl.newTab().setText("Tab2"));
