@@ -16,6 +16,16 @@ public class Blog implements Parcelable {
     public Blog() {
     }
 
+    public Blog(String blogDescription, String blogId, String blogTitle, String location, String image, String time, String userEmail) {
+        this.blogDescription = blogDescription;
+        this.blogId = blogId;
+        this.blogTitle = blogTitle;
+        this.location = location;
+        this.image = image;
+        this.time = time;
+        this.userEmail = userEmail;
+    }
+
     protected Blog(Parcel in) {
         blogDescription = in.readString();
         blogId = in.readString();

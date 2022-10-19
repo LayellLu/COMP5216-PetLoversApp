@@ -1,12 +1,15 @@
 package com.example.comp5216_petloversapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,7 +17,10 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.comp5216_petloversapp.databinding.FragmentOhBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
+import com.google.common.net.InternetDomainName;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,13 +28,18 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class OhFragment extends Fragment {
     private FragmentOhBinding binding;
     private ImagePageAdapter imageAdapter = new ImagePageAdapter();
     private HomeAdapter homeAdapter ;
     List<Blog> blogs = new ArrayList<>();
+    private DatabaseReference mDatabase;
+    private EditText search_txt_view;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -42,6 +53,55 @@ public class OhFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initData();
+        onSearchClick();
+    }
+    public void onSearchClick() {
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        search_txt_view = (EditText) getActivity().findViewById(R.id.search_txt);
+
+        View search_btn_view = getActivity().findViewById(R.id.search_btn);
+        search_btn_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String searchTxt = search_txt_view.getText().toString().trim();
+                Log.i("searchTxt is: ", searchTxt);
+                mDatabase.child("Blogs").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        if (!task.isSuccessful()) {
+                            Log.e("firebase", "Error getting data", task.getException());
+                        }
+                        else {
+                            Log.d("firebase", String.valueOf(task.getResult().getValue()));
+                            HashMap<String, Object> searchResultHM =
+                                    (HashMap<String, Object>) task.getResult().getValue();
+                            blogs.clear();
+                            for (Map.Entry<String, Object> entry : searchResultHM.entrySet()){
+                                System.out.println(entry.getKey());
+                                System.out.println(entry.getValue());
+                                HashMap<String, String> blogHM = (HashMap<String, String>) entry.getValue();
+                                String blogDescription = blogHM.get("blogDescription");
+                                String blogId = blogHM.get("blogId");
+                                String blogTitle = blogHM.get("blogTitle");
+                                String location = blogHM.get("location");
+                                String image = blogHM.get("image");
+                                String time = blogHM.get("time");
+                                String userEmail = blogHM.get("userEmail");
+
+                                Blog blog = new Blog(blogDescription, blogId, blogTitle,
+                                        location, image, time, userEmail);
+                                if (blog.getBlogDescription().contains(searchTxt)) {
+                                    blogs.add(blog);
+                                }
+                            }
+                            homeAdapter.notifyDataSetChanged();
+                        }
+                    }
+                });
+            }
+        });
+
     }
 
     private void initData() {

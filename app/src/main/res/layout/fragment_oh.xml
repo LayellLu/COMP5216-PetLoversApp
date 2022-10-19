@@ -13,15 +13,24 @@
             android:padding="5dp">
 
         <EditText
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/shape_edit"
-                android:drawableLeft="@drawable/ic_baseline_search_24"
-                android:drawablePadding="10dp"
-                android:elevation="2dp"
-                android:hint="Search"
-                android:paddingHorizontal="10dp"
-                android:textColorHint="#cdcdcd" />
+            android:id="@+id/search_txt"
+            android:layout_width="352dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/shape_edit"
+            android:drawableLeft="@drawable/ic_baseline_search_24"
+            android:drawablePadding="10dp"
+            android:elevation="2dp"
+            android:hint="Search"
+            android:paddingHorizontal="10dp"
+            android:textColorHint="#cdcdcd" />
+
+        <Button
+            android:id="@+id/search_btn"
+            android:layout_width="62dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/ic_baseline_search_24"
+            />
     </LinearLayout>
 
     <RelativeLayout
