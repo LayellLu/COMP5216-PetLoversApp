@@ -14,6 +14,8 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.comp5216_petloversapp.databinding.FragmentOhBinding;
@@ -36,7 +38,8 @@ import java.util.Map;
 public class OhFragment extends Fragment {
     private FragmentOhBinding binding;
     private ImagePageAdapter imageAdapter = new ImagePageAdapter();
-    private HomeAdapter homeAdapter ;
+    private HomeAdapter homeAdapter;
+    private NewsAdapter newsAdapter;
     List<Blog> blogs = new ArrayList<>();
     private DatabaseReference mDatabase;
     private EditText search_txt_view;
@@ -56,6 +59,7 @@ public class OhFragment extends Fragment {
         initData();
         onSearchClick();
     }
+
     public void onSearchClick() {
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
@@ -72,13 +76,12 @@ public class OhFragment extends Fragment {
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
                         if (!task.isSuccessful()) {
                             Log.e("firebase", "Error getting data", task.getException());
-                        }
-                        else {
+                        } else {
                             Log.d("firebase", String.valueOf(task.getResult().getValue()));
                             HashMap<String, Object> searchResultHM =
                                     (HashMap<String, Object>) task.getResult().getValue();
                             blogs.clear();
-                            for (Map.Entry<String, Object> entry : searchResultHM.entrySet()){
+                            for (Map.Entry<String, Object> entry : searchResultHM.entrySet()) {
                                 System.out.println(entry.getKey());
                                 System.out.println(entry.getValue());
                                 HashMap<String, String> blogHM = (HashMap<String, String>) entry.getValue();
@@ -104,13 +107,14 @@ public class OhFragment extends Fragment {
         });
 
     }
+
     private void initData() {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Blogs");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 blogs.clear();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Blog blog = snapshot.getValue(Blog.class);
                     blog.setKey(snapshot.getKey());
                     blogs.add(blog);
@@ -139,13 +143,13 @@ public class OhFragment extends Fragment {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Blogs");
                         Blog blog = snapshot.getValue(Blog.class);
-                        if (blog.getFav()!=null&&blog.getFav().contains(FirebaseAuth.getInstance().getUid())){
+                        if (blog.getFav() != null && blog.getFav().contains(FirebaseAuth.getInstance().getUid())) {
                             //
                             blog.getFav().remove(FirebaseAuth.getInstance().getUid());
 
                             ref.child(snapshot.getKey()).setValue(blog);
-                        }else{
-                            if (blog.getFav()==null){
+                        } else {
+                            if (blog.getFav() == null) {
                                 blog.setFav(new ArrayList<>());
                             }
                             blog.getFav().add(FirebaseAuth.getInstance().getUid());
@@ -163,12 +167,20 @@ public class OhFragment extends Fragment {
             }
         });
         binding.rvData.setAdapter(homeAdapter);
-        binding.tl.addTab(binding.tl.newTab().setText("Tab1"));
-        binding.tl.addTab(binding.tl.newTab().setText("Tab2"));
+
+        newsAdapter = new NewsAdapter();
+        binding.tl.addTab(binding.tl.newTab().setText("Tab1").setId(0));
+        binding.tl.addTab(binding.tl.newTab().setText("News").setId(1));
         binding.tl.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                homeAdapter.notifyDataSetChanged();
+                if (tab.getId() == 0) {
+                    binding.rvData.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
+                    binding.rvData.setAdapter(homeAdapter);
+                } else {
+                    binding.rvData.setLayoutManager(new LinearLayoutManager(getContext()));
+                    binding.rvData.setAdapter(newsAdapter);
+                }
             }
 
             @Override

@@ -29,8 +29,7 @@
                 android:layout_width="62dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:drawableLeft="@drawable/ic_baseline_search_24"
-        />
+                android:drawableLeft="@drawable/ic_baseline_search_24" />
     </LinearLayout>
 
 
@@ -70,13 +69,15 @@
                     android:background="@drawable/shape_indicator1" />
         </LinearLayout>
     </RelativeLayout>
+
     <com.google.android.material.tabs.TabLayout
-            android:layout_width="match_parent"
             android:id="@+id/tl"
-            app:tabTextColor="#cdcdcd"
-            app:tabSelectedTextColor="@color/purple_500"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             app:tabIndicatorFullWidth="false"
-            android:layout_height="wrap_content"/>
+            app:tabSelectedTextColor="@color/purple_500"
+            app:tabTextColor="#cdcdcd" />
+
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_data"
             android:layout_width="match_parent"
