@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.common.net.InternetDomainName;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -103,7 +104,6 @@ public class OhFragment extends Fragment {
         });
 
     }
-
     private void initData() {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Blogs");
         databaseReference.addValueEventListener(new ValueEventListener() {
@@ -112,6 +112,7 @@ public class OhFragment extends Fragment {
                 blogs.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Blog blog = snapshot.getValue(Blog.class);
+                    blog.setKey(snapshot.getKey());
                     blogs.add(blog);
 
                 }
@@ -128,6 +129,39 @@ public class OhFragment extends Fragment {
 
     private void initTab() {
         homeAdapter = new HomeAdapter(blogs);
+        homeAdapter.setOnFavListener(new HomeAdapter.OnFavListener() {
+            @Override
+            public void onClickFav(int position) {
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Blogs")
+                        .child(blogs.get(position).getKey());
+                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Blogs");
+                        Blog blog = snapshot.getValue(Blog.class);
+                        if (blog.getFav()!=null&&blog.getFav().contains(FirebaseAuth.getInstance().getUid())){
+                            //
+                            blog.getFav().remove(FirebaseAuth.getInstance().getUid());
+
+                            ref.child(snapshot.getKey()).setValue(blog);
+                        }else{
+                            if (blog.getFav()==null){
+                                blog.setFav(new ArrayList<>());
+                            }
+                            blog.getFav().add(FirebaseAuth.getInstance().getUid());
+
+                            ref.child(snapshot.getKey()).setValue(blog);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+            }
+        });
         binding.rvData.setAdapter(homeAdapter);
         binding.tl.addTab(binding.tl.newTab().setText("Tab1"));
         binding.tl.addTab(binding.tl.newTab().setText("Tab2"));

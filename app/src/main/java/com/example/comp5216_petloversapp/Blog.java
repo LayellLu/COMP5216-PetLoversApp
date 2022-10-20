@@ -3,6 +3,8 @@ package com.example.comp5216_petloversapp;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.List;
+
 public class Blog implements Parcelable {
 
     private String blogDescription;
@@ -12,6 +14,8 @@ public class Blog implements Parcelable {
     private String image;
     private String time;
     private String userEmail;
+    private String key;
+    private List<String> fav;
 
     public Blog() {
     }
@@ -26,6 +30,8 @@ public class Blog implements Parcelable {
         this.userEmail = userEmail;
     }
 
+
+
     protected Blog(Parcel in) {
         blogDescription = in.readString();
         blogId = in.readString();
@@ -34,6 +40,8 @@ public class Blog implements Parcelable {
         image = in.readString();
         time = in.readString();
         userEmail = in.readString();
+        key = in.readString();
+        fav = in.createStringArrayList();
     }
 
     @Override
@@ -45,6 +53,8 @@ public class Blog implements Parcelable {
         dest.writeString(image);
         dest.writeString(time);
         dest.writeString(userEmail);
+        dest.writeString(key);
+        dest.writeStringList(fav);
     }
 
     @Override
@@ -70,6 +80,22 @@ public class Blog implements Parcelable {
 
     public void setBlogDescription(String blogDescription) {
         this.blogDescription = blogDescription;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public List<String> getFav() {
+        return fav;
+    }
+
+    public void setFav(List<String> fav) {
+        this.fav = fav;
     }
 
     public String getBlogId() {

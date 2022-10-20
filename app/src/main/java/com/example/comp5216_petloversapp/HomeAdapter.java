@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.comp5216_petloversapp.databinding.ItemHomeBinding;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +40,19 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
         holder.binding.tvName.setText(blogs.get(position).getUserEmail());
         holder.binding.tvLocation.setText(blogs.get(position).getLocation());
         holder.binding.tvTitle.setText(blogs.get(position).getBlogTitle());
-        holder.binding.ivFavorite.setImageResource( R.drawable.ic_baseline_favorite_24_gray);
+        if (blogs.get(position).getFav()!=null&&blogs.get(position).getFav().contains(FirebaseAuth.getInstance().getUid())){
+            holder.binding.ivFavorite.setImageResource( R.drawable.ic_baseline_favorite_24_red);
+        }  else{
+            holder.binding.ivFavorite.setImageResource( R.drawable.ic_baseline_favorite_24_gray);
+        }
+        holder.binding.ivFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (onFavListener!=null){
+                    onFavListener.onClickFav(position);
+                }
+            }
+        });
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,6 +75,14 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeViewHolder
 
     private int dip2px(float value) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, Resources.getSystem().getDisplayMetrics());
+    }
+    public interface OnFavListener{
+        void onClickFav(int position);
+    }
+    OnFavListener onFavListener;
+
+    public void setOnFavListener(OnFavListener onFavListener) {
+        this.onFavListener = onFavListener;
     }
 
     @Override
