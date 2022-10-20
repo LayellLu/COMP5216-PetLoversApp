@@ -3,6 +3,21 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/USYD/USYD_22S2/COMP5216 Mobile Computing/Project/COMP5216-PetLoversApp/app/src/main/res/drawable/shape_edit.xml" value="0.1" />
+        <entry key="..\:/USYD/USYD_22S2/COMP5216 Mobile Computing/Project/COMP5216-PetLoversApp/app/src/main/res/layout/activity_add_post.xml" value="0.1" />
+        <entry key="..\:/USYD/USYD_22S2/COMP5216 Mobile Computing/Project/COMP5216-PetLoversApp/app/src/main/res/layout/activity_detail.xml" value="0.1" />
+        <entry key="..\:/USYD/USYD_22S2/COMP5216 Mobile Computing/Project/COMP5216-PetLoversApp/app/src/main/res/layout/activity_detail_news.xml" value="0.1" />
+        <entry key="..\:/USYD/USYD_22S2/COMP5216 Mobile Computing/Project/COMP5216-PetLoversApp/app/src/main/res/layout/activity_login.xml" value="0.1" />
+        <entry key="..\:/USYD/USYD_22S2/COMP5216 Mobile Computing/Project/COMP5216-PetLoversApp/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/USYD/USYD_22S2/COMP5216 Mobile Computing/Project/COMP5216-PetLoversApp/app/src/main/res/layout/activity_main2.xml" value="0.22" />
+        <entry key="..\:/USYD/USYD_22S2/COMP5216 Mobile Computing/Project/COMP5216-PetLoversApp/app/src/main/res/layout/activity_main3.xml" value="0.16666666666666666" />
+        <entry key="..\:/USYD/USYD_22S2/COMP5216 Mobile Computing/Project/COMP5216-PetLoversApp/app/src/main/res/layout/activity_my.xml" value="0.1" />
+        <entry key="..\:/USYD/USYD_22S2/COMP5216 Mobile Computing/Project/COMP5216-PetLoversApp/app/src/main/res/layout/activity_register.xml" value="0.1" />
+        <entry key="..\:/USYD/USYD_22S2/COMP5216 Mobile Computing/Project/COMP5216-PetLoversApp/app/src/main/res/layout/activity_reset_password.xml" value="0.13333333333333333" />
+        <entry key="..\:/USYD/USYD_22S2/COMP5216 Mobile Computing/Project/COMP5216-PetLoversApp/app/src/main/res/layout/fragment_oh.xml" value="0.22" />
+        <entry key="..\:/USYD/USYD_22S2/COMP5216 Mobile Computing/Project/COMP5216-PetLoversApp/app/src/main/res/layout/item_content.xml" value="0.1" />
+        <entry key="..\:/USYD/USYD_22S2/COMP5216 Mobile Computing/Project/COMP5216-PetLoversApp/app/src/main/res/layout/item_home.xml" value="0.14666666666666667" />
+        <entry key="..\:/USYD/USYD_22S2/COMP5216 Mobile Computing/Project/COMP5216-PetLoversApp/app/src/main/res/layout/item_news.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_detail.xml" value="0.121875" />
         <entry key="app/src/main/res/layout/activity_detail_news.xml" value="0.27291666666666664" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
@@ -18,7 +33,7 @@
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$" />
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_17_PREVIEW" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
