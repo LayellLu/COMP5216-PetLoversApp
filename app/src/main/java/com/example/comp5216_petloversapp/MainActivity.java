@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         OhFragment fragment1 = new OhFragment();
-        OhFragment fragment2 = new OhFragment();
+        MineFragment fragment2 = new MineFragment();
         binding.flContent.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @NonNull
             @Override
