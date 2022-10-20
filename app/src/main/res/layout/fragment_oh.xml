@@ -1,77 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/purple_500"
-        android:gravity="center"
-        android:padding="5dp">
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/purple_500"
+            android:gravity="center"
+            android:padding="5dp">
 
         <EditText
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/shape_edit"
-            android:drawableLeft="@drawable/ic_baseline_search_24"
-            android:drawablePadding="10dp"
-            android:elevation="2dp"
-            android:hint="Search"
-            android:paddingHorizontal="10dp"
-            android:textColorHint="#cdcdcd" />
+                android:id="@+id/search_txt"
+                android:layout_width="352dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/shape_edit"
+                android:drawableLeft="@drawable/ic_baseline_search_24"
+                android:drawablePadding="10dp"
+                android:elevation="2dp"
+                android:hint="Search"
+                android:paddingHorizontal="10dp"
+                android:textColorHint="#cdcdcd" />
+
+        <Button
+                android:id="@+id/search_btn"
+                android:layout_width="62dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/ic_baseline_search_24" />
     </LinearLayout>
 
+
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="200dp">
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
 
         <androidx.viewpager.widget.ViewPager
-            android:id="@+id/banner"
-            android:layout_width="match_parent"
-            android:layout_height="200dp" />
+                android:id="@+id/banner"
+                android:layout_width="match_parent"
+                android:layout_height="200dp" />
 
         <LinearLayout
-            android:id="@+id/ll_indicator"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="5dp"
-            android:gravity="center"
-            android:orientation="horizontal">
+                android:id="@+id/ll_indicator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:orientation="horizontal">
 
             <View
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:background="@drawable/shape_indicator" />
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:background="@drawable/shape_indicator" />
 
             <View
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_marginLeft="10dp"
-                android:background="@drawable/shape_indicator1" />
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/shape_indicator1" />
 
             <View
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_marginLeft="10dp"
-                android:background="@drawable/shape_indicator1" />
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/shape_indicator1" />
         </LinearLayout>
     </RelativeLayout>
+
     <com.google.android.material.tabs.TabLayout
-        android:layout_width="match_parent"
-        android:id="@+id/tl"
-        app:tabTextColor="#cdcdcd"
-        app:tabSelectedTextColor="@color/purple_500"
-        app:tabIndicatorFullWidth="false"
-        android:layout_height="wrap_content"/>
+            android:id="@+id/tl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabIndicatorFullWidth="false"
+            app:tabSelectedTextColor="@color/purple_500"
+            app:tabTextColor="#cdcdcd" />
+
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_data"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
-        app:spanCount="2" />
+            android:id="@+id/rv_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+            app:spanCount="2" />
 </LinearLayout>
