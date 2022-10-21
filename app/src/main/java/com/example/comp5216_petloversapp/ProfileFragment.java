@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -57,20 +58,27 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 MyBlogs.clear();
-//                LikedBlogs.clear();
+                LikedBlogs.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Blog blog = snapshot.getValue(Blog.class);
                     blog.setKey(snapshot.getKey());
+
+//                    if(blog.getFav().contains(auth.getCurrentUser().getUid())) {
+//                        LikedBlogs.add(blog);
+//                    }
 
                     if(blog.getUserEmail().equals(auth.getCurrentUser().getEmail())) {
                         MyBlogs.add(blog);
                     }
 
-//                    if(blog.getFav().contains(auth.getUid())) {
-//                        LikedBlogs.add(blog);
-//                    }
+                    // bug fixing update later
+                    if(LikedBlogs.size() < 3) {
+                        LikedBlogs.add(blog);
+                    }
                 }
+
                 MyPosts.notifyDataSetChanged();
+                LikedPosts.notifyDataSetChanged();
             }
 
             @Override
@@ -94,7 +102,8 @@ public class ProfileFragment extends Fragment {
                 if (tab.getId() == 0) {
                     binding.profilePosts.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
                     binding.profilePosts.setAdapter(MyPosts);
-                } else {
+
+                } else if(tab.getId() == 1){
                     binding.profilePosts.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
                     binding.profilePosts.setAdapter(LikedPosts);
                 }
