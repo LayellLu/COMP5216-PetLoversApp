@@ -64,7 +64,7 @@ public class Add_post extends AppCompatActivity implements LocationListener {
 
     Uri image_uri = null;
 
-    private static String city="11";
+    private static String city="Sydney";
     private static String state;
     private static String country;
     private static final int GALLERY_IMAGE_CODE = 100;
