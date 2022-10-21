@@ -109,6 +109,7 @@ public class OhFragment extends Fragment {
     }
 
     private void initData() {
+
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Blogs");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -118,10 +119,9 @@ public class OhFragment extends Fragment {
                     Blog blog = snapshot.getValue(Blog.class);
                     blog.setKey(snapshot.getKey());
                     blogs.add(blog);
-
                 }
-                homeAdapter.notifyDataSetChanged();
 
+                homeAdapter.notifyDataSetChanged();
 
             }
 
@@ -144,7 +144,7 @@ public class OhFragment extends Fragment {
                         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Blogs");
                         Blog blog = snapshot.getValue(Blog.class);
                         if (blog.getFav() != null && blog.getFav().contains(FirebaseAuth.getInstance().getUid())) {
-                            //
+
                             blog.getFav().remove(FirebaseAuth.getInstance().getUid());
 
                             ref.child(snapshot.getKey()).setValue(blog);
@@ -169,7 +169,7 @@ public class OhFragment extends Fragment {
         binding.rvData.setAdapter(homeAdapter);
 
         newsAdapter = new NewsAdapter();
-        binding.tl.addTab(binding.tl.newTab().setText("Tab1").setId(0));
+        binding.tl.addTab(binding.tl.newTab().setText("Posts").setId(0));
         binding.tl.addTab(binding.tl.newTab().setText("News").setId(1));
         binding.tl.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
