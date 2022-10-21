@@ -29,8 +29,8 @@ public class ProfileFragment extends Fragment {
     private HomeAdapter MyPosts;
     private HomeAdapter LikedPosts;
 
-    private List<Blog> MyBlogs = new ArrayList<>();
-    private List<Blog> LikedBlogs = new ArrayList<>();
+    List<Blog> MyBlogs = new ArrayList<>();
+    List<Blog> LikedBlogs = new ArrayList<>();
 
 
     @Nullable
@@ -57,7 +57,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 MyBlogs.clear();
-                LikedBlogs.clear();
+//                LikedBlogs.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Blog blog = snapshot.getValue(Blog.class);
                     blog.setKey(snapshot.getKey());
@@ -66,9 +66,9 @@ public class ProfileFragment extends Fragment {
                         MyBlogs.add(blog);
                     }
 
-                    if(blog.getFav().contains(auth.getUid())) {
-                        LikedBlogs.add(blog);
-                    }
+//                    if(blog.getFav().contains(auth.getUid())) {
+//                        LikedBlogs.add(blog);
+//                    }
                 }
                 MyPosts.notifyDataSetChanged();
             }
@@ -95,7 +95,6 @@ public class ProfileFragment extends Fragment {
                     binding.profilePosts.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
                     binding.profilePosts.setAdapter(MyPosts);
                 } else {
-
                     binding.profilePosts.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
                     binding.profilePosts.setAdapter(LikedPosts);
                 }
