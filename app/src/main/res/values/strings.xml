@@ -3,4 +3,9 @@
     <string name="login">Login</string>
     <string name="signup">Sign Up</string>
     <string name="reset_password">Reset Password</string>
+    <string name="dialog_delete_title">Delete an post</string>
+    <string name="dialog_delete_msg">Are you sure to delete this post?</string>
+    <string name="dialog_cancel_title">Cancel update item</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
 </resources>
