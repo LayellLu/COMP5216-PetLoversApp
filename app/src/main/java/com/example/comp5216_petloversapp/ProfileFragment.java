@@ -27,7 +27,7 @@ public class ProfileFragment extends Fragment {
 
     private FirebaseAuth auth;
     private FragmentProfileBinding binding;
-    private HomeAdapter MyPosts;
+    private MyPostAdapter MyPosts;
     private HomeAdapter LikedPosts;
 
     List<Blog> MyBlogs = new ArrayList<>();
@@ -88,7 +88,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void initTab() {
-        MyPosts = new HomeAdapter(MyBlogs);
+        MyPosts = new MyPostAdapter(MyBlogs);
         LikedPosts = new HomeAdapter(LikedBlogs);
 
         binding.profilePosts.setAdapter(MyPosts);
