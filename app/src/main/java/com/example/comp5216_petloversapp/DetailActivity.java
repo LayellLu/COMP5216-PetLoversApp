@@ -6,16 +6,22 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.example.comp5216_petloversapp.databinding.ActivityDetailBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,7 +43,22 @@ public class DetailActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         blog =  getIntent().getParcelableExtra("data");
         Glide.with(this).load(blog.getImage()).into(binding.iv);
-        binding.tvName.setText(blog.getUserEmail());
+        FirebaseFirestore.getInstance().
+                collection("users").whereEqualTo("email", blog.getUserEmail())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot doc : task.getResult()) {
+                                Log.d("Task length", String.valueOf(task.getResult().size()));
+                                Log.d("User", doc.getId() + "=>" + doc.getData());
+                                String userName = doc.getData().get("userName").toString();
+                                binding.tvName.setText(userName);
+                            }
+                        }
+                    }
+                });
+//        binding.tvName.setText(blog.getUserEmail());
         binding.tvContent.setText(blog.getBlogDescription());
         binding.tvTitle.setText(blog.getBlogTitle());
         binding.recyclerview.setLayoutManager(new LinearLayoutManager(this));
