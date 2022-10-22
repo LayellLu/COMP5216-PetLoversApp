@@ -64,7 +64,7 @@ public class Add_post extends AppCompatActivity implements LocationListener {
 
     Uri image_uri = null;
 
-    private static String city="11";
+    private static String city="Sydney";
     private static String state;
     private static String country;
     private static final int GALLERY_IMAGE_CODE = 100;
@@ -153,7 +153,7 @@ public class Add_post extends AppCompatActivity implements LocationListener {
         String filePathAndName = "Picture/" + "post" + timeStamp;
         String email = auth.getCurrentUser().getEmail();
         String[] split = email.split("@");
-        String username = split[0];
+        String filename = split[0];
 
         getLastLocation();
 
@@ -185,10 +185,10 @@ public class Add_post extends AppCompatActivity implements LocationListener {
                                 hashMap.put("image", downloadUri);
                                 hashMap.put("blogDescription", description);
                                 hashMap.put("time", timeStamp);
-                                hashMap.put("location", country + "_ " + state + "_ " + city);
-                                System.out.println("pLocation: " + country + "_ " + state + "_ " + city);
+                                hashMap.put("location",city);
+
                                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Blogs");
-                                ref.child(username + "_" + timeStamp).setValue(hashMap)
+                                ref.child(filename + "_" + timeStamp).setValue(hashMap)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
 
                                             @Override
