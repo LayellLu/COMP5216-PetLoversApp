@@ -16,9 +16,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.comp5216_petloversapp.databinding.ItemHomeBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.List;
 
@@ -42,7 +47,22 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.HomeViewHo
     public void onBindViewHolder(@NonNull HomeViewHolder holder, int position) {
         holder.binding.iv.getLayoutParams().height = getHeight(position);
         Glide.with(holder.itemView.getContext()).load(blogs.get(position).getImage()).into(holder.binding.iv);
-        holder.binding.tvName.setText(blogs.get(position).getUserEmail());
+        FirebaseFirestore.getInstance().
+                collection("users").whereEqualTo("email", blogs.get(position).getUserEmail())
+                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot doc : task.getResult()) {
+                                Log.d("Task length", String.valueOf(task.getResult().size()));
+                                Log.d("User", doc.getId() + "=>" + doc.getData());
+                                String userName = doc.getData().get("userName").toString();
+                                holder.binding.tvName.setText(userName);
+                            }
+                        }
+                    }
+                });
+//        holder.binding.tvName.setText(blogs.get(position).getUserEmail());
         holder.binding.tvLocation.setText(blogs.get(position).getLocation());
         holder.binding.tvTitle.setText(blogs.get(position).getBlogTitle());
         if (blogs.get(position).getFav()!=null&&blogs.get(position).getFav().contains(FirebaseAuth.getInstance().getUid())){
