@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     DatabaseReference myRef = database.getReference("message");
 
     private TextView addPost;
+    private ImageView editUserName;
 
     private FirebaseAuth mAuth;
 
@@ -57,6 +59,11 @@ public class MainActivity extends AppCompatActivity {
         addPost = findViewById(R.id.add_post);
         addPost.setOnClickListener(v -> {
             startActivity(new Intent(this, Add_post.class));
+        });
+
+        editUserName = findViewById(R.id.iv_modify);
+        editUserName.setOnClickListener(view -> {
+            startActivity(new Intent(this, EditProfileActivity.class));
         });
 
         myRef.addValueEventListener(new ValueEventListener() {
