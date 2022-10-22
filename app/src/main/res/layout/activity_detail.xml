@@ -115,7 +115,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@null"
-                    android:hint="here"
+                    android:hint="Comment here"
                     android:gravity="top|start"
                     android:textColor="#666666"
                     android:textSize="17sp" />
@@ -125,7 +125,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:textColor="@color/white"
-                    android:text="评论"/>
+                    android:text="Submit"/>
         </LinearLayout>
     </LinearLayout>
 
