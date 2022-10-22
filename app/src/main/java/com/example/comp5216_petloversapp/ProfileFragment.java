@@ -4,14 +4,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-
 import com.example.comp5216_petloversapp.databinding.FragmentProfileBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -19,7 +18,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,12 +33,12 @@ public class ProfileFragment extends Fragment {
     List<Blog> MyBlogs = new ArrayList<>();
     List<Blog> LikedBlogs = new ArrayList<>();
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         initTab();
+        initUserName();
 
         return binding.getRoot();
     }
@@ -80,10 +80,13 @@ public class ProfileFragment extends Fragment {
                 LikedPosts.notifyDataSetChanged();
             }
 
+
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
+
     }
 
     private void initTab() {
@@ -186,6 +189,23 @@ public class ProfileFragment extends Fragment {
 
             }
         });
+    }
+
+    private void initUserName() {
+        auth = FirebaseAuth.getInstance();
+
+        try {
+            FirebaseFirestore.getInstance()
+                    .collection("users").document(auth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            String userName = task.getResult().getData().get("userName").toString();
+                            binding.userName.setText(userName);
+                        }
+                    });
+        }catch (Exception e) {
+            System.out.println("No fucking name");
+        }
     }
 
 
