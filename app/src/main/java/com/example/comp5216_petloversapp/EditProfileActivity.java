@@ -74,7 +74,7 @@ public class EditProfileActivity extends AppCompatActivity {
             });
 
         }catch (Exception e) {
-            System.out.println("No fucking name");
+            System.out.println("No such name");
         }
 
         return userName;
