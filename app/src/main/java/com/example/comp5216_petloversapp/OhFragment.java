@@ -33,6 +33,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class OhFragment extends Fragment {
@@ -69,7 +70,7 @@ public class OhFragment extends Fragment {
         search_btn_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String searchTxt = search_txt_view.getText().toString().trim();
+                String searchTxt = search_txt_view.getText().toString().trim().toLowerCase(Locale.ROOT);
                 Log.i("searchTxt is: ", searchTxt);
                 mDatabase.child("Blogs").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
@@ -95,7 +96,8 @@ public class OhFragment extends Fragment {
 
                                 Blog blog = new Blog(blogDescription, blogId, blogTitle,
                                         location, image, time, userEmail);
-                                if (blog.getBlogDescription().contains(searchTxt)) {
+                                if (blog.getBlogDescription().toLowerCase(Locale.ROOT).contains(searchTxt)
+                                        || blog.getBlogTitle().toLowerCase(Locale.ROOT).contains(searchTxt)) {
                                     blogs.add(blog);
                                 }
                             }
