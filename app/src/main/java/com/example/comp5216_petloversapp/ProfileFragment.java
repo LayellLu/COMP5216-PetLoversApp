@@ -88,7 +88,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void initTab() {
-        MyPosts = new MyPostAdapter(MyBlogs);
+        MyPosts = new MyPostAdapter(getContext(), MyBlogs);
         LikedPosts = new HomeAdapter(LikedBlogs);
 
         binding.profilePosts.setAdapter(MyPosts);

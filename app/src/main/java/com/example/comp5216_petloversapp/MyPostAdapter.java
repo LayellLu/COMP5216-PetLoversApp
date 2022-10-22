@@ -1,6 +1,8 @@
 package com.example.comp5216_petloversapp;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.util.Log;
@@ -15,14 +17,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.comp5216_petloversapp.databinding.ItemHomeBinding;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
 public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.HomeViewHolder> {
 
     List<Blog> blogs;
+    Context context ;
 
-    public MyPostAdapter(List<Blog> blogs) {
+    public MyPostAdapter(Context context, List<Blog> blogs) {
+        this.context = context;
         this.blogs = blogs;
     }
 
@@ -64,7 +70,37 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.HomeViewHo
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Log.i("MainActivity", "Long Clicked item " + position);
+                Log.i("MyPostAdapter", "Long Clicked item " + position);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle(R.string.dialog_delete_title)
+                        .setMessage(R.string.dialog_delete_msg)
+                        .setPositiveButton(R.string.delete, new
+                                DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        // Remove item from the ArrayList
+                                        FirebaseAuth auth = FirebaseAuth.getInstance();
+                                        String filename = auth.getCurrentUser().getEmail().split("@")[0];
+                                        Log.i("auth is: ", auth.getCurrentUser().getEmail());
+                                        Blog blog = blogs.get(position);
+                                        String idStr = blog.getBlogId().split("_")[1];
+                                        idStr = idStr + "_" + blog.getBlogId().split("_")[2];
+                                        String blogId =filename + "_" + idStr;
+                                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference()
+                                                .child("Blogs").child(blogId);
+                                        databaseReference.removeValue();
+                                    }
+                                })
+                        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                // User cancelled the dialog
+                                // Nothing happens
+                            }
+                        });
+                builder.create().show();
+
+
+
                 return true;
             }
         });
