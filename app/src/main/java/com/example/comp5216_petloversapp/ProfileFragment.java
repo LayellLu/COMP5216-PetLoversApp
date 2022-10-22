@@ -63,17 +63,16 @@ public class ProfileFragment extends Fragment {
                     Blog blog = snapshot.getValue(Blog.class);
                     blog.setKey(snapshot.getKey());
 
-//                    if(blog.getFav().contains(auth.getCurrentUser().getUid())) {
-//                        LikedBlogs.add(blog);
-//                    }
-
                     if(blog.getUserEmail().equals(auth.getCurrentUser().getEmail())) {
                         MyBlogs.add(blog);
                     }
 
-                    // bug fixing update later
-                    if(LikedBlogs.size() < 3) {
-                        LikedBlogs.add(blog);
+                    try {
+                        if(blog.getFav().contains(auth.getCurrentUser().getUid())) {
+                            LikedBlogs.add(blog);
+                        }
+                    }catch (Exception e) {
+                        System.out.println("THAT'S OK");
                     }
                 }
 
@@ -90,6 +89,74 @@ public class ProfileFragment extends Fragment {
     private void initTab() {
         MyPosts = new MyPostAdapter(getContext(), MyBlogs);
         LikedPosts = new HomeAdapter(LikedBlogs);
+
+        LikedPosts.setOnFavListener(new HomeAdapter.OnFavListener() {
+            @Override
+            public void onClickFav(int position) {
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Blogs")
+                        .child(LikedBlogs.get(position).getKey());
+                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Blogs");
+                        Blog blog = snapshot.getValue(Blog.class);
+                        if (blog.getFav() != null && blog.getFav().contains(FirebaseAuth.getInstance().getUid())) {
+
+                            blog.getFav().remove(FirebaseAuth.getInstance().getUid());
+
+                            ref.child(snapshot.getKey()).setValue(blog);
+                        } else {
+                            if (blog.getFav() == null) {
+                                blog.setFav(new ArrayList<>());
+                            }
+                            blog.getFav().add(FirebaseAuth.getInstance().getUid());
+
+                            ref.child(snapshot.getKey()).setValue(blog);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+            }
+        });
+
+        MyPosts.setOnFavListener(new MyPostAdapter.OnFavListener() {
+            @Override
+            public void onClickFav(int position) {
+                DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Blogs")
+                        .child(MyBlogs.get(position).getKey());
+                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Blogs");
+                        Blog blog = snapshot.getValue(Blog.class);
+                        if (blog.getFav() != null && blog.getFav().contains(FirebaseAuth.getInstance().getUid())) {
+
+                            blog.getFav().remove(FirebaseAuth.getInstance().getUid());
+
+                            ref.child(snapshot.getKey()).setValue(blog);
+                        } else {
+                            if (blog.getFav() == null) {
+                                blog.setFav(new ArrayList<>());
+                            }
+                            blog.getFav().add(FirebaseAuth.getInstance().getUid());
+
+                            ref.child(snapshot.getKey()).setValue(blog);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+            }
+        });
 
         binding.profilePosts.setAdapter(MyPosts);
 
