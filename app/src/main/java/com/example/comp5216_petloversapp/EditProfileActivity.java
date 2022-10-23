@@ -43,7 +43,6 @@ public class EditProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 EditUserName(et_userName.getText().toString());
-                tv_userName.setText(setUserName());
                 finish();
             }
         });

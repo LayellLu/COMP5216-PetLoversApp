@@ -61,11 +61,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, Add_post.class));
         });
 
-        editUserName = findViewById(R.id.iv_modify);
-        editUserName.setOnClickListener(view -> {
-            startActivity(new Intent(this, EditProfileActivity.class));
-        });
-
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

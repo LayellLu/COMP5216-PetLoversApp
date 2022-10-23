@@ -1,9 +1,12 @@
 package com.example.comp5216_petloversapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -39,6 +42,7 @@ public class ProfileFragment extends Fragment {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         initTab();
         initUserName();
+        onEditClick();
 
         return binding.getRoot();
     }
@@ -207,6 +211,27 @@ public class ProfileFragment extends Fragment {
             System.out.println("No such name");
         }
     }
+
+    private void onEditClick() {
+
+        binding.ivModify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivityForResult(new Intent(getActivity(), EditProfileActivity.class), 1);
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 1) {
+            initUserName();
+        }
+    }
+
+
 
 
 
